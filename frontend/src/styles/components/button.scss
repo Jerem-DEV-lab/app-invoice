@@ -1,0 +1,14 @@
+.button_back{
+    display: inline-flex; 
+    justify-content: center;
+    gap: 24px;
+    transition: color cubic-bezier(1, 0, 0, 1) 0.3s;
+    &:hover{
+        color: var(--purple);
+    }
+    @include dark(){
+        &:hover{
+            color: var(--grey);
+        }
+    }
+}
