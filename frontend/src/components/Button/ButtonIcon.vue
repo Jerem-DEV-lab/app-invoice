@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick ? onClick('checked') : null" type="button">
+  <button @click="onClick" type="button">
     <span class="icon" v-if="slotStart"><slot name="icon-start"></slot> </span
     >{{ label }}
     <span class="icon" v-if="slotEnd">
@@ -29,7 +29,7 @@ export default {
   props: {
     onClick: {
       type: Function,
-      required: false,
+      required: true,
     },
     label: {
       type: String,
