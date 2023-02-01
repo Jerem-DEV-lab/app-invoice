@@ -4,8 +4,8 @@
       <div class="list_title">
         <h1 class="title">Factures</h1>
         <span>
-          Vous avez {{ totalInvoices }} facture<fragment
-            v-if="totalInvoices > 1"
+          Vous avez {{ invoices.length }} facture<fragment
+            v-if="invoices.length > 1"
             >s
           </fragment>
         </span>
@@ -22,8 +22,12 @@
         </button-icon>
       </div>
     </header>
-    <main class="main-content">
+    <main :class="[invoices.length === 0 && 'empty-invoice']">
       <empty-invoice v-if="invoices.length === 0"></empty-invoice>
+      <list-invoices
+        v-else-if="invoices.length > 0"
+        :invoices="invoices"
+      ></list-invoices>
     </main>
   </section>
 </template>
@@ -31,8 +35,11 @@
 import ButtonGoBack from "@/components/Button/ButtonGoBack.vue";
 import IconChevronDown from "@/components/Icon/IconChevronDown.vue";
 import ButtonIcon from "@/components/Button/ButtonIcon.vue";
-import IconAdd from "../components/Icon/IconAdd.vue";
+import IconAdd from "@/components/Icon/IconAdd.vue";
 import EmptyInvoice from "@/components/EmptyInvoice.vue";
+import ListInvoices from "@/components/Invoices/ListInvoices.vue";
+import { Fragment } from "vue-fragment";
+import Data from "@/data.json";
 export default {
   name: "HomeView",
   components: {
@@ -41,13 +48,14 @@ export default {
     ButtonIcon,
     IconAdd,
     EmptyInvoice,
+    ListInvoices,
+    Fragment,
   },
   data() {
     return {
       labelButtonFilter: "Filtrer par status",
       labelButtonNewInvoice: "Nouvelle facture",
-      totalInvoices: 0,
-      invoices: [],
+      invoices: Data,
     };
   },
   mounted() {
@@ -106,17 +114,18 @@ button {
 }
 
 .main-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: calc(100vh - 230px);
+  &.empty-invoice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 @media screen and (max-width: 767px) {
-  
-.list_action {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
+  .list_action {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 }
 </style>

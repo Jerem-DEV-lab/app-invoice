@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap");
 @import "tools/reset";
 @import "tools/function";
 @import "tools/mixins";
@@ -30,11 +30,13 @@ body {
   --grey: #858bb2;
   --typo-color: #0c0e16;
   --background-nav: #1e2139;
+  --item-invoice: #FFFFFF;
   --nav-width-lg: 103px;
 }
 @include dark() {
   --background: #141625;
   --typo-color: #ffffff;
+  --item-invoice: #1E2139;
 }
 
 @import "components/button.scss";
