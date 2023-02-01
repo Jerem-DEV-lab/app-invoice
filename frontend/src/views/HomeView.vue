@@ -1,35 +1,40 @@
 <template>
-  <section>
-    <header>
-      <div class="list_title">
-        <h1 class="title">Factures</h1>
-        <span>
-          Vous avez {{ invoices.length }} facture<fragment
-            v-if="invoices.length > 1"
-            >s
-          </fragment>
-        </span>
-      </div>
-      <div class="list_action">
-        <button>
-          {{ labelButtonFilter }}
-          <icon-chevron-down></icon-chevron-down>
-        </button>
-        <button-icon :label="labelButtonNewInvoice">
-          <template slot="icon-start">
-            <icon-add></icon-add>
-          </template>
-        </button-icon>
-      </div>
-    </header>
-    <main :class="[invoices.length === 0 && 'empty-invoice']">
-      <empty-invoice v-if="invoices.length === 0"></empty-invoice>
-      <list-invoices
-        v-else-if="invoices.length > 0"
-        :invoices="invoices"
-      ></list-invoices>
-    </main>
-  </section>
+  <div>
+    <section>
+      <header>
+        <div class="list_title">
+          <h1 class="title">Factures</h1>
+          <span>
+            Vous avez {{ invoices.length }} facture<fragment
+              v-if="invoices.length > 1"
+              >s
+            </fragment>
+          </span>
+        </div>
+        <div class="list_action">
+          <button>
+            {{ labelButtonFilter }}
+            <icon-chevron-down></icon-chevron-down>
+          </button>
+          <button-icon :label="labelButtonNewInvoice" :onClick="openModal">
+            <template slot="icon-start">
+              <icon-add></icon-add>
+            </template>
+          </button-icon>
+        </div>
+      </header>
+      <main :class="[invoices.length === 0 && 'empty-invoice']">
+        <empty-invoice v-if="invoices.length === 0"></empty-invoice>
+        <list-invoices
+          v-else-if="invoices.length > 0"
+          :invoices="invoices"
+        ></list-invoices>
+      </main>
+    </section>
+    <transition v-if="stateModalCreate" name="slide-in">
+      <modal-invoice :closeModal="closeModal"></modal-invoice>
+    </transition>
+  </div>
 </template>
 <script>
 import ButtonGoBack from "@/components/Button/ButtonGoBack.vue";
@@ -38,6 +43,7 @@ import ButtonIcon from "@/components/Button/ButtonIcon.vue";
 import IconAdd from "@/components/Icon/IconAdd.vue";
 import EmptyInvoice from "@/components/EmptyInvoice.vue";
 import ListInvoices from "@/components/Invoices/ListInvoices.vue";
+import ModalInvoice from "@/components/Invoices/ModalInvoice.vue";
 import { Fragment } from "vue-fragment";
 import Data from "@/data.json";
 export default {
@@ -50,12 +56,14 @@ export default {
     EmptyInvoice,
     ListInvoices,
     Fragment,
+    ModalInvoice,
   },
   data() {
     return {
       labelButtonFilter: "Filtrer par status",
       labelButtonNewInvoice: "Nouvelle facture",
       invoices: Data,
+      stateModalCreate: false,
     };
   },
   mounted() {
@@ -81,11 +89,26 @@ export default {
         this.labelButtonNewInvoice = "Nouveau";
       }
     },
+    openModal() {
+      return (this.stateModalCreate = true);
+    },
+    closeModal() {
+      return (this.stateModalCreate = false);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+/* todo change animation */
+.slide-in-enter-active,
+.slide-in-leave-active {
+  transition: opacity 0.5s;
+}
+.slide-in-enter, .slide-in-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
 header {
   display: flex;
   align-content: center;

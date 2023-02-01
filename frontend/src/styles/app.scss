@@ -32,11 +32,18 @@ body {
   --background-nav: #1e2139;
   --item-invoice: #FFFFFF;
   --nav-width-lg: 103px;
+  --input-background: #FFFFFF;
+  --input-border: #DFE3FA;
+  --cancel-bg: #F9FAFE;
+  --discard-bg: #F9FAFE;
 }
 @include dark() {
   --background: #141625;
   --typo-color: #ffffff;
+  --input-background: #1E2139;
   --item-invoice: #1E2139;
+  --input-border: #252945;
+  --cancel-bg: #252945;
 }
 
 @import "components/button.scss";
