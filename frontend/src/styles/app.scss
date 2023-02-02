@@ -21,7 +21,7 @@ body {
 :root {
   --space: 8px;
   --purple: #7c5dfa;
-  --purple-hover: #9277FF;
+  --purple-hover: #9277ff;
   --light-purple: #9277ff;
   --background: #f8f8fb;
   --red: #ec5757;
@@ -30,18 +30,18 @@ body {
   --grey: #858bb2;
   --typo-color: #0c0e16;
   --background-nav: #1e2139;
-  --item-invoice: #FFFFFF;
+  --item-invoice: #ffffff;
   --nav-width-lg: 103px;
-  --input-background: #FFFFFF;
-  --input-border: #DFE3FA;
-  --cancel-bg: #F9FAFE;
-  --discard-bg: #F9FAFE;
+  --input-background: #ffffff;
+  --input-border: #dfe3fa;
+  --cancel-bg: #f9fafe;
+  --discard-bg: #f9fafe;
 }
 @include dark() {
   --background: #141625;
   --typo-color: #ffffff;
-  --input-background: #1E2139;
-  --item-invoice: #1E2139;
+  --input-background: #1e2139;
+  --item-invoice: #1e2139;
   --input-border: #252945;
   --cancel-bg: #252945;
 }
@@ -50,29 +50,66 @@ body {
 .title {
   font-size: 32px;
   letter-spacing: 1px;
-  @include down(1024){
+  @include down(1024) {
     font-size: 20px;
   }
 }
 
-body{
+body {
   font-family: "League Spartan", sans-serif;
   background-color: var(--background);
-  color: var(--typo-color)!important;
+  color: var(--typo-color) !important;
   height: 100vh;
   width: 100vw;
 }
-:root{
+:root {
   --space: 8px;
-  --purple: #7C5DFA;
-  --light-purple: #9277FF;
-  --background: #F8F8FB;
-  --red: #EC5757;
-  --light-red: #FF9797;
-  --white: #FFFFFF;
-  --typo-color: #0C0E16;
+  --purple: #7c5dfa;
+  --light-purple: #9277ff;
+  --background: #f8f8fb;
+  --red: #ec5757;
+  --light-red: #ff9797;
+  --white: #ffffff;
+  --typo-color: #0c0e16;
 }
 @include dark() {
   --background: #141625;
-  --typo-color: #FFFFFF;
+  --typo-color: #ffffff;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: var(--background);
+  cursor: pointer;
+  line-height: 0;
+  outline: 0;
+  padding: 0 !important;
+  height: 16px;
+  width: 16px;
+  -webkit-appearance: none;
+  opacity: 0.5;
+}
+
+input[type="checkbox"]:checked:before,
+input[type="radio"]:checked:before {
+  content: "";
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 4px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  margin: -1px -1px 0 -1px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: var(--purple);
+  opacity: 1;
 }

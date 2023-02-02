@@ -12,10 +12,53 @@
           </span>
         </div>
         <div class="list_action">
-          <button>
-            {{ labelButtonFilter }}
-            <icon-chevron-down></icon-chevron-down>
-          </button>
+          <dropdown
+            :label="labelButtonFilter"
+            :onOpen="actionDropdownFilter"
+            :onClose="() => (stateDropdownFilter = false)"
+            :state="stateDropdownFilter"
+          >
+            <div class="input-wrapper">
+              <input
+                type="radio"
+                id="all"
+                v-model="filter"
+                value=""
+                name="filter"
+              />
+              <label for="all">Toutes</label>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="radio"
+                id="draft"
+                v-model="filter"
+                value="draft"
+                name="filter"
+              />
+              <label for="draft">Brouillon</label>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="radio"
+                id="pending"
+                v-model="filter"
+                name="filter"
+                value="pending"
+              />
+              <label for="pending">En attente</label>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="radio"
+                id="paid"
+                v-model="filter"
+                name="filter"
+                value="paid"
+              />
+              <label for="paid">Payée</label>
+            </div>
+          </dropdown>
           <button-icon :label="labelButtonNewInvoice" :onClick="openModal">
             <template slot="icon-start">
               <icon-add></icon-add>
@@ -23,16 +66,19 @@
           </button-icon>
         </div>
       </header>
-      <main :class="[invoices.length === 0 && 'empty-invoice']">
-        <empty-invoice v-if="invoices.length === 0"></empty-invoice>
+      <main :class="[filteredInvoices.length === 0 && 'empty-invoice']">
+        <empty-invoice v-if="filteredInvoices.length === 0"></empty-invoice>
         <list-invoices
-          v-else-if="invoices.length > 0"
-          :invoices="invoices"
+          v-else-if="filteredInvoices.length > 0"
+          :invoices="filteredInvoices"
         ></list-invoices>
       </main>
     </section>
-    <transition v-if="stateModalCreate" name="slide-in">
-      <modal-invoice :closeModal="closeModal"></modal-invoice>
+    <transition name="slide">
+      <modal-invoice
+        v-if="stateModalCreate"
+        :closeModal="closeModal"
+      ></modal-invoice>
     </transition>
   </div>
 </template>
@@ -44,6 +90,7 @@ import IconAdd from "@/components/Icon/IconAdd.vue";
 import EmptyInvoice from "@/components/EmptyInvoice.vue";
 import ListInvoices from "@/components/Invoices/ListInvoices.vue";
 import ModalInvoice from "@/components/Invoices/ModalInvoice.vue";
+import Dropdown from "@/components/Dropdown.vue";
 import { Fragment } from "vue-fragment";
 import Data from "@/data.json";
 export default {
@@ -57,6 +104,7 @@ export default {
     ListInvoices,
     Fragment,
     ModalInvoice,
+    Dropdown,
   },
   data() {
     return {
@@ -64,6 +112,8 @@ export default {
       labelButtonNewInvoice: "Nouvelle facture",
       invoices: Data,
       stateModalCreate: false,
+      stateDropdownFilter: false,
+      filter: "",
     };
   },
   mounted() {
@@ -89,6 +139,13 @@ export default {
         this.labelButtonNewInvoice = "Nouveau";
       }
     },
+    actionDropdownFilter() {
+      this.stateDropdownFilter = !this.stateDropdownFilter;
+      return this.stateDropdownFilter;
+    },
+    onCloseDropdwon() {
+      return (this.stateDropdownFilter = false);
+    },
     openModal() {
       return (this.stateModalCreate = true);
     },
@@ -96,19 +153,23 @@ export default {
       return (this.stateModalCreate = false);
     },
   },
+  computed: {
+    filteredInvoices() {
+      if (this.filter === "draft") {
+        return this.invoices.filter((invoice) => invoice.status === "draft");
+      } else if (this.filter === "pending") {
+        return this.invoices.filter((invoice) => invoice.status === "pending");
+      } else if (this.filter === "paid") {
+        return this.invoices.filter((invoice) => invoice.status === "paid");
+      } else {
+        return this.invoices;
+      }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-/* todo change animation */
-.slide-in-enter-active,
-.slide-in-leave-active {
-  transition: opacity 0.5s;
-}
-.slide-in-enter, .slide-in-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transition: opacity 0.5s;
-}
 header {
   display: flex;
   align-content: center;
@@ -143,6 +204,12 @@ button {
     align-items: center;
     justify-content: center;
   }
+}
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  line-height: 0;
 }
 @media screen and (max-width: 767px) {
   .list_action {
