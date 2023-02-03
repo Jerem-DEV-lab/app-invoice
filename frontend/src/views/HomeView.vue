@@ -76,6 +76,7 @@
     </section>
     <transition name="slide">
       <modal-invoice
+        @createInvoice="onCreatedInvoice($event)"
         v-if="stateModalCreate"
         :closeModal="closeModal"
       ></modal-invoice>
@@ -93,6 +94,7 @@ import ModalInvoice from "@/components/Invoices/ModalInvoice.vue";
 import Dropdown from "@/components/Dropdown.vue";
 import { Fragment } from "vue-fragment";
 import Data from "@/data.json";
+
 export default {
   name: "HomeView",
   components: {
@@ -130,6 +132,9 @@ export default {
     window.removeEventListener("resize", this.getWindowWidth);
   },
   methods: {
+    onCreatedInvoice(invoice) {
+      return this.invoices.push(invoice);
+    },
     getWindowWidth() {
       if (window.innerWidth > 768) {
         this.labelButtonFilter = "Filtrer par status";
@@ -155,6 +160,7 @@ export default {
   },
   computed: {
     filteredInvoices() {
+      this.stateDropdownFilter = false;
       if (this.filter === "draft") {
         return this.invoices.filter((invoice) => invoice.status === "draft");
       } else if (this.filter === "pending") {

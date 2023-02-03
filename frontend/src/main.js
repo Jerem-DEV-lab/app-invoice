@@ -4,8 +4,7 @@ import router from "./router";
 import store from "./store";
 import { Plugin } from 'vue-fragment'
 import ElementUI from "element-ui";
-import "jquery/src/jquery.js";
-import "bootstrap";
+import "@/styles/app.scss";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

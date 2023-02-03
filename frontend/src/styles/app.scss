@@ -2,6 +2,8 @@
 @import "tools/reset";
 @import "tools/function";
 @import "tools/mixins";
+@import "components/button.scss";
+
 *,
 body,
 ::before,
@@ -17,6 +19,8 @@ body {
   color: var(--typo-color) !important;
   height: 100vh;
   width: 100vw;
+  scrollbar-width: thin;
+  scrollbar-color: var(--purple);
 }
 :root {
   --space: 8px;
@@ -28,6 +32,7 @@ body {
   --light-red: #ff9797;
   --white: #ffffff;
   --grey: #858bb2;
+  --label: #7E88C3;
   --typo-color: #0c0e16;
   --background-nav: #1e2139;
   --item-invoice: #ffffff;
@@ -36,6 +41,7 @@ body {
   --input-border: #dfe3fa;
   --cancel-bg: #f9fafe;
   --discard-bg: #f9fafe;
+  --placeholder: #858bb2;
 }
 @include dark() {
   --background: #141625;
@@ -43,10 +49,11 @@ body {
   --input-background: #1e2139;
   --item-invoice: #1e2139;
   --input-border: #252945;
+  --placeholder: #858bb2;
+  --label: #DFE3FA;
   --cancel-bg: #252945;
 }
 
-@import "components/button.scss";
 .title {
   font-size: 32px;
   letter-spacing: 1px;
@@ -54,31 +61,12 @@ body {
     font-size: 20px;
   }
 }
-
-body {
-  font-family: "League Spartan", sans-serif;
-  background-color: var(--background);
-  color: var(--typo-color) !important;
-  height: 100vh;
-  width: 100vw;
+  input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
 }
-:root {
-  --space: 8px;
-  --purple: #7c5dfa;
-  --light-purple: #9277ff;
-  --background: #f8f8fb;
-  --red: #ec5757;
-  --light-red: #ff9797;
-  --white: #ffffff;
-  --typo-color: #0c0e16;
-}
-@include dark() {
-  --background: #141625;
-  --typo-color: #ffffff;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
+input[type=checkbox],
+input[type=radio] {
   position: relative;
   border: 1px solid transparent;
   border-radius: 2px;
@@ -112,4 +100,22 @@ input[type="checkbox"]:checked,
 input[type="radio"]:checked {
   background-color: var(--purple);
   opacity: 1;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(53, 50, 50);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  scrollbar-color: var(--purple);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--purple);
+  -webkit-border-radius: 1ex;
+}
+
+::-webkit-scrollbar-corner {
+  background: #000;
 }
