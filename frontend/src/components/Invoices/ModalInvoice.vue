@@ -3,7 +3,7 @@
     <div class="overlay" @click="closeModal"></div>
     <div class="modal-content">
       <h2>Nouvelle facture</h2>
-      <form>
+      <form ref="anyName">
         <div class="form-group">
           <span>Information de l'entreprise</span>
           <div class="input-wrapper">
@@ -140,83 +140,58 @@
           <div class="header__table-qty">Qty</div>
           <div class="header__table-price">Prix</div>
           <div class="header__table-total">Total</div>
-          <div class="table-row">
+          <div class="table-row" v-for="(item, i) in newInvoice.items" :key="i">
             <input
               class="input__table-entitled"
               type="text"
               name="product_name"
+              v-model="item.name"
               placeholder="Banner Design"
             />
             <input
               class="input__table-qty"
               style="text-align: center; padding-block: 2px"
-              type="text"
+              type="number"
+              v-model="item.qty"
               name="qty"
               placeholder="1"
             />
             <input
-              type="text"
+              type="number"
               class="input__table-price"
               name="price"
+              v-model="item.price"
               placeholder="156.00"
             />
             <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              0
+              style="display: flex; align-items: center; justify-content: center;" v-text="item.total + ' €'">
             </div>
-            <button class="icon_delete" type="button">
-              <icon-delete></icon-delete>
-            </button>
-          </div>
-          <div class="table-row">
-            <input
-              class="input__table-entitled"
-              type="text"
-              name="product_name"
-              placeholder="Banner Design"
-            />
-            <input
-              class="input__table-qty"
-              style="text-align: center; padding-block: 2px"
-              type="text"
-              name="qty"
-              placeholder="1"
-            />
-            <input
-              type="text"
-              class="input__table-price"
-              name="price"
-              placeholder="156.00"
-            />
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
+            <button
+              class="icon_delete"
+              type="button"
+              @click.prevent="deleteRowProduct(i)"
             >
-              0
-            </div>
-            <button class="icon_delete" type="button">
               <icon-delete></icon-delete>
             </button>
           </div>
         </div>
-        <button type="button" class="button__invoice-add">
+        <div v-if="newInvoice.items.length <= 0" class="empty-row">
+          <p>Cliquer sur le bouton &#171; <pre>+Ajouter un produit</pre> &#187; pour ajouter une ligne.</p>
+        </div>
+        <button
+          type="button"
+          class="button__invoice-add"
+          @click.prevent="addNewRowProduct"
+        >
           + Ajouter un produit
         </button>
         <div class="modal__footer">
-          <button type="button" class="button__cancel">Annuler</button>
+          <button type="button" class="button__cancel" @click.prevent="closeModal">Annuler</button>
           <div class="button__wrapper">
             <button type="button" class="button__save-draft">
               Sauvegarder le brouillon
             </button>
-            <button type="button" class="button__create">
+            <button type="button" class="button__create" @click="createInvoice">
               Créer la facture
             </button>
           </div>
@@ -229,29 +204,8 @@
 <script>
 import IconDelete from "@/components/Icon/IconDelete.vue";
 import SelectInput from "@/components/Input/SelectInput.vue";
-const modelInvoice = {
-  id: "",
-  paymentTerms: "",
-  paymentDue: "",
-  clientName: "",
-  clientEmail: "",
-  status: "",
-  createdAt: "",
-  senderAddress: {
-    street: "",
-    city: "",
-    postCode: "",
-    country: "",
-  },
-  clientAddress: {
-    street: "",
-    city: "",
-    postCode: "",
-    country: "",
-  },
-  items: [],
-  total: "",
-};
+import {modelInvoice} from "@/models/invoice.js";
+import { generateID } from "@/utils/generateid";
 const paymentTerms = [
   "Paiement à réception de facture",
   "Paiement à 30 jours",
@@ -272,17 +226,53 @@ export default {
   },
   data() {
     return {
-      newInvoice: modelInvoice,
+      newInvoice: modelInvoice(),
       paymentTerms,
       paymentTermsSelected: null,
     };
   },
   methods: {
+    resetNewInvoice(){
+      this.$refs.anyName.reset()
+    },
+    createInvoice(){
+      this.newInvoice.status = "pending"
+      this.$emit("createInvoice", this.newInvoice);
+      this.closeModal()
+    },
+    deleteRowProduct(index) {
+      this.newInvoice.items.splice(index, 1);
+    },
+    addNewRowProduct() {
+      this.newInvoice.items.push({
+        name: "",
+        qty: 0,
+        price: 0,
+        total: 0,
+      });
+    },
     onSelectInput(value) {
       this.paymentTermsSelected = value;
-      console.log(value);
+      this.newInvoice.paymentTerms = value;
     },
   },
+  mounted() {
+    this.newInvoice.id = generateID();
+    this.$nextTick(() => {
+      this.$refs.anyName.reset();
+    })
+  },
+  watch: {
+    '$data.newInvoice.items': {
+      handler(){
+        console.log("handle")
+        this.newInvoice.items.map((item) => {
+        return item.total = parseFloat(item.qty) * parseFloat(item.price)
+      });
+      },
+      deep: true
+    },
+  }
 };
 </script>
 
@@ -495,6 +485,26 @@ input[type="date"]:focus::before {
 
   @include dark() {
     background: var(--background);
+  }
+}
+
+.empty-row{
+  margin-block: 24px 0;
+  p{
+    display: flex;
+    align-items: center;
+    pre{
+      display:flex;
+      background-color: #82838b;
+      color: white;
+      font-family: 'League Spartan', sans-serif;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-inline: 4px;
+      @include dark() {
+      background-color: var(--input-background);
+      }
+    }
   }
 }
 </style>

@@ -76,6 +76,7 @@
     </section>
     <transition name="slide">
       <modal-invoice
+        @createInvoice="onCreatedInvoice($event)"
         v-if="stateModalCreate"
         :closeModal="closeModal"
       ></modal-invoice>
@@ -131,6 +132,9 @@ export default {
     window.removeEventListener("resize", this.getWindowWidth);
   },
   methods: {
+    onCreatedInvoice(invoice) {
+      return this.invoices.push(invoice);
+    },
     getWindowWidth() {
       if (window.innerWidth > 768) {
         this.labelButtonFilter = "Filtrer par status";
