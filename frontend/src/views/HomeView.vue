@@ -93,6 +93,7 @@ import ModalInvoice from "@/components/Invoices/ModalInvoice.vue";
 import Dropdown from "@/components/Dropdown.vue";
 import { Fragment } from "vue-fragment";
 import Data from "@/data.json";
+
 export default {
   name: "HomeView",
   components: {
@@ -155,6 +156,7 @@ export default {
   },
   computed: {
     filteredInvoices() {
+      this.stateDropdownFilter = false;
       if (this.filter === "draft") {
         return this.invoices.filter((invoice) => invoice.status === "draft");
       } else if (this.filter === "pending") {

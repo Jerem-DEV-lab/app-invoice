@@ -13,7 +13,7 @@
               placeholder="19 Union Terrace"
               autocomplete="off"
               name="company_address"
-              
+              v-model="newInvoice.senderAddress.street"
             />
           </div>
           <div class="input-wrapper-grid">
@@ -21,30 +21,30 @@
               <label for="city">Ville</label>
               <input
                 type="text"
+                v-model="newInvoice.senderAddress.city"
                 placeholder="Paris"
                 name="city"
                 autocomplete="off"
-                
               />
             </div>
             <div class="input-wrapper">
               <label for="company_postal_code">Code postal</label>
               <input
+                v-model="newInvoice.senderAddress.postCode"
                 type="text"
                 placeholder="75000"
                 name="company_postal_code"
                 autocomplete="off"
-                
               />
             </div>
             <div class="input-wrapper">
               <label for="company_country">Pays</label>
               <input
                 type="text"
+                v-model="newInvoice.senderAddress.country"
                 autocomplete="off"
                 placeholder="France"
                 name="company_country"
-                
               />
             </div>
           </div>
@@ -55,63 +55,82 @@
             <label for="clientName">Nom Prénom</label>
             <input
               type="text"
+              v-model="newInvoice.clientName"
               placeholder="John Doe"
               autocomplete="off"
               name="clientName"
-              
             />
           </div>
           <div class="input-wrapper">
             <label for="email">Email</label>
             <input
+              v-model="newInvoice.clientEmail"
               type="text"
               placeholder="john@example.com"
               name="email"
               autocomplete="off"
-              
             />
           </div>
           <div class="input-wrapper">
-            <label for="postal_code">Code postal</label>
+            <label for="client_address">Adresse</label>
             <input
               type="text"
-              placeholder="75000"
-              name="postal_code"
+              placeholder=""
+              name="client_address"
               autocomplete="off"
-              
+              v-model="newInvoice.clientAddress.street"
             />
           </div>
-          <div class="input-wrapper">
-            <label for="country">Pays</label>
-            <input
-              type="text"
-              autocomplete="off"
-              placeholder="France"
-              name="country"
-              
-            />
-          </div>
-          <div class="input-wrapper-grid" style="--columns: 2">
+          <div class="input-wrapper-grid" style="--columns: 3">
             <div class="input-wrapper">
-              <label for="city">Date Facture</label>
+              <label for="country">Ville</label>
               <input
-                type="date"
-                placeholder="01 Fev 2023"
-                disabled
-                name="city"
+                type="text"
                 autocomplete="off"
-                
+                placeholder="Paris"
+                name="country"
+                v-model="newInvoice.clientAddress.city"
               />
             </div>
             <div class="input-wrapper">
-              <label for="postal_code">Code postal</label>
+              <label for="country">Code postal</label>
               <input
                 type="text"
-                placeholder="75000"
-                name="postal_code"
                 autocomplete="off"
-                
+                placeholder="75000"
+                name="country"
+                v-model="newInvoice.clientAddress.postCode"
               />
+            </div>
+            <div class="input-wrapper">
+              <label for="country">Pays</label>
+              <input
+                type="text"
+                v-model="newInvoice.clientAddress.country"
+                placeholder="France"
+                name="country"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div class="input-wrapper-grid" style="--columns: 2">
+            <div class="input-wrapper">
+              <label for="country">Date facturation</label>
+              <input
+                type="date"
+                autocomplete="off"
+                placeholder="02/02/2023"
+                name="createdAt"
+                v-model="newInvoice.createdAt"
+              />
+            </div>
+            <div class="input-wrapper">
+              <label for="country">Condition de paiement</label>
+              <select-input
+                :options="paymentTerms"
+                @input="onSelectInput($event)"
+              ></select-input>
             </div>
           </div>
         </div>
@@ -192,10 +211,14 @@
           + Ajouter un produit
         </button>
         <div class="modal__footer">
-          <button class="button__cancel">Annuler</button>
+          <button type="button" class="button__cancel">Annuler</button>
           <div class="button__wrapper">
-            <button class="button__save-draft">Sauvegarder le brouillon</button>
-            <button class="button__create">Créer la facture</button>
+            <button type="button" class="button__save-draft">
+              Sauvegarder le brouillon
+            </button>
+            <button type="button" class="button__create">
+              Créer la facture
+            </button>
           </div>
         </div>
       </form>
@@ -204,18 +227,62 @@
 </template>
 
 <script>
-import IconDelete from "../Icon/IconDelete.vue";
+import IconDelete from "@/components/Icon/IconDelete.vue";
+import SelectInput from "@/components/Input/SelectInput.vue";
+const modelInvoice = {
+  id: "",
+  paymentTerms: "",
+  paymentDue: "",
+  clientName: "",
+  clientEmail: "",
+  status: "",
+  createdAt: "",
+  senderAddress: {
+    street: "",
+    city: "",
+    postCode: "",
+    country: "",
+  },
+  clientAddress: {
+    street: "",
+    city: "",
+    postCode: "",
+    country: "",
+  },
+  items: [],
+  total: "",
+};
+const paymentTerms = [
+  "Paiement à réception de facture",
+  "Paiement à 30 jours",
+  "Paiement à 60 jours",
+  "Paiement à 90 jours",
+];
 export default {
   name: "ModalInvoice",
   components: {
     IconDelete,
+    SelectInput,
   },
-  props:{
+  props: {
     closeModal: {
       type: Function,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
+  data() {
+    return {
+      newInvoice: modelInvoice,
+      paymentTerms,
+      paymentTermsSelected: null,
+    };
+  },
+  methods: {
+    onSelectInput(value) {
+      this.paymentTermsSelected = value;
+      console.log(value);
+    },
+  },
 };
 </script>
 
@@ -295,14 +362,14 @@ export default {
     font-size: 12px;
     line-height: 15px;
     font-weight: 500;
-    color: #dfe3fa;
+    color: var(--label);
     margin-bottom: 8px;
   }
   input:disabled {
     border-color: transparent;
     cursor: not-allowed;
     &::placeholder {
-      color: var(--grey);
+      color: var(--placeholder);
     }
   }
 }
@@ -317,7 +384,7 @@ input {
   color: var(--typo-color);
   background: var(--input-background);
   &::placeholder {
-    color: var(--grey);
+    color: var(--placeholder);
   }
   &:focus {
     outline: none;
@@ -345,7 +412,7 @@ input[type="date"]::before {
   position: absolute;
   left: 16px;
   right: 40px;
-  color: red;
+  color: var(--typo-color);
   background: var(--input-background);
   white-space: pre;
 }
@@ -426,7 +493,7 @@ input[type="date"]:focus::before {
     color: white;
   }
 
-  @include dark(){
+  @include dark() {
     background: var(--background);
   }
 }
