@@ -262,6 +262,13 @@ export default {
       this.$refs.anyName.reset();
     })
   },
+  computed:{
+    totalRows(){
+      return this.newInvoice.items.reduce((acc, item) => {
+        return this.newInvoice.total = acc + item.total
+      }, 0)
+    }
+  },
   watch: {
     '$data.newInvoice.items': {
       handler(){
