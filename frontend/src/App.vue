@@ -5,11 +5,9 @@
 </template>
 <script>
 import WrapperApp from "./components/WrapperApp.vue";
-import ButtonGoBack from "@/components/Button/ButtonGoBack.vue";
 export default {
   name: "App",
   components: {
-    ButtonGoBack,
     WrapperApp,
   },
 };
