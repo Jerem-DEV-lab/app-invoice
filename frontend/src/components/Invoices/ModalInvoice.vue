@@ -270,7 +270,7 @@ export default {
     }
   },
   watch: {
-    '$data.newInvoice.items': {
+    'newInvoice.items': {
       handler(){
         console.log("handle")
         this.newInvoice.items.map((item) => {
