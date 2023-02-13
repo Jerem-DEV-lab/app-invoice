@@ -17,8 +17,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/tools/function.scss';
-@import '@/styles/tools/mixins.scss';
+@import 'Styles/tools/function.scss';
+@import 'Styles/tools/mixins.scss';
 .badge__container {
   display: flex;
   align-items: center;

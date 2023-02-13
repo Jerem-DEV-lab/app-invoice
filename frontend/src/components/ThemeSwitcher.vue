@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import IconMoon from "./Icon/IconMoon.vue";
-import IconSun from "./Icon/IconSun.vue";
+import IconMoon from "Components/Icon/IconMoon.vue";
+import IconSun from "Components/Icon/IconSun.vue";
 const defaultTheme = () => {
   if (
     window.matchMedia &&

@@ -5,57 +5,26 @@
         <div class="list_title">
           <h1 class="title">Factures</h1>
           <span>
-            Vous avez {{ invoices.length }} facture<fragment
-              v-if="invoices.length > 1"
-              >s
-            </fragment>
+            Vous avez {{ invoices.length }} facture 1s
           </span>
         </div>
         <div class="list_action">
-          <dropdown
-            :label="labelButtonFilter"
-            :onOpen="actionDropdownFilter"
-            :onClose="() => (stateDropdownFilter = false)"
-            :state="stateDropdownFilter"
-          >
+          <dropdown :label="labelButtonFilter" :onOpen="actionDropdownFilter"
+            :onClose="() => (stateDropdownFilter = false)" :state="stateDropdownFilter">
             <div class="input-wrapper">
-              <input
-                type="radio"
-                id="all"
-                v-model="filter"
-                value=""
-                name="filter"
-              />
+              <input type="radio" id="all" v-model="filter" value="" name="filter" />
               <label for="all">Toutes</label>
             </div>
             <div class="input-wrapper">
-              <input
-                type="radio"
-                id="draft"
-                v-model="filter"
-                value="draft"
-                name="filter"
-              />
+              <input type="radio" id="draft" v-model="filter" value="draft" name="filter" />
               <label for="draft">Brouillon</label>
             </div>
             <div class="input-wrapper">
-              <input
-                type="radio"
-                id="pending"
-                v-model="filter"
-                name="filter"
-                value="pending"
-              />
+              <input type="radio" id="pending" v-model="filter" name="filter" value="pending" />
               <label for="pending">En attente</label>
             </div>
             <div class="input-wrapper">
-              <input
-                type="radio"
-                id="paid"
-                v-model="filter"
-                name="filter"
-                value="paid"
-              />
+              <input type="radio" id="paid" v-model="filter" name="filter" value="paid" />
               <label for="paid">Payée</label>
             </div>
           </dropdown>
@@ -68,31 +37,24 @@
       </header>
       <main :class="[filteredInvoices.length === 0 && 'empty-invoice']">
         <empty-invoice v-if="filteredInvoices.length === 0"></empty-invoice>
-        <list-invoices
-          v-else-if="filteredInvoices.length > 0"
-          :invoices="filteredInvoices"
-        ></list-invoices>
+        <list-invoices v-else-if="filteredInvoices.length > 0" :invoices="filteredInvoices"></list-invoices>
       </main>
     </section>
     <transition name="slide">
-      <modal-invoice
-        @createInvoice="onCreatedInvoice($event)"
-        v-if="stateModalCreate"
-        :closeModal="closeModal"
-      ></modal-invoice>
+      <modal-invoice @createInvoice="onCreatedInvoice($event)" v-if="stateModalCreate"
+        :closeModal="closeModal"></modal-invoice>
     </transition>
   </div>
 </template>
 <script>
-import ButtonGoBack from "@/components/Button/ButtonGoBack.vue";
-import IconChevronDown from "@/components/Icon/IconChevronDown.vue";
-import ButtonIcon from "@/components/Button/ButtonIcon.vue";
-import IconAdd from "@/components/Icon/IconAdd.vue";
-import EmptyInvoice from "@/components/EmptyInvoice.vue";
-import ListInvoices from "@/components/Invoices/ListInvoices.vue";
-import ModalInvoice from "@/components/Invoices/ModalInvoice.vue";
-import Dropdown from "@/components/Dropdown.vue";
-import { Fragment } from "vue-fragment";
+import ButtonGoBack from "Components/Button/ButtonGoBack.vue";
+import IconChevronDown from "Components/Icon/IconChevronDown.vue";
+import ButtonIcon from "Components/Button/ButtonIcon.vue";
+import IconAdd from "Components/Icon/IconAdd.vue";
+import EmptyInvoice from "Components/EmptyInvoice.vue";
+import ListInvoices from "Components/Invoices/ListInvoices.vue";
+import ModalInvoice from "Components/Invoices/ModalInvoice.vue";
+import Dropdown from "Components/Dropdown.vue";
 import Data from "@/data.json";
 
 export default {
@@ -104,7 +66,6 @@ export default {
     IconAdd,
     EmptyInvoice,
     ListInvoices,
-    Fragment,
     ModalInvoice,
     Dropdown,
   },
@@ -183,6 +144,7 @@ header {
   margin-top: 32px;
   margin-bottom: 24px;
 }
+
 .list_title span {
   font-size: 12px;
   color: var(--grey);
@@ -190,11 +152,13 @@ header {
   line-height: 15px;
   font-weight: 500;
 }
+
 .list_action {
   display: flex;
   align-items: center;
   gap: 40px;
 }
+
 button {
   display: flex;
   align-items: center;
@@ -205,18 +169,21 @@ button {
 
 .main-content {
   height: calc(100vh - 230px);
+
   &.empty-invoice {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 }
+
 .input-wrapper {
   display: flex;
   align-items: center;
   gap: 13px;
   line-height: 0;
 }
+
 @media screen and (max-width: 767px) {
   .list_action {
     display: flex;

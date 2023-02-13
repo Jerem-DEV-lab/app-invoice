@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import IconLogo from "@/components/Icon/IconLogo.vue";
+import IconLogo from "Components/Icon/IconLogo.vue";
 export default {
   name: "Logo",
   components: {

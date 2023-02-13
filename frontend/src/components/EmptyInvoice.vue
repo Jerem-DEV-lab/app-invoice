@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <img src="@/assets/illustration-empty.svg" />
+    <img src="Assets/illustration-empty.svg" />
     <div>
       <h2>Aucune facture pour le moment.</h2>
       <p>

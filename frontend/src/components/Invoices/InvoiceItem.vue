@@ -19,13 +19,11 @@
 </template>
 
 <script>
-import IconArrowRight from "../Icon/IconArrowRight.vue";
-import BadgeItem from "@/components/Invoices/BadgeItem.vue";
-import { Fragment } from "vue-fragment";
+import IconArrowRight from "Components/Icon/IconArrowRight.vue";
+import BadgeItem from "Components/Invoices/BadgeItem.vue";
 export default {
   name: "invoice-item",
   components: {
-    Fragment,
     IconArrowRight,
     BadgeItem,
   },
@@ -50,8 +48,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/tools/function.scss";
-@import "@/styles/tools/mixins.scss";
+@import "Styles/tools/function.scss";
+@import "Styles/tools/mixins.scss";
 .row__invoice-item {
   display: flex;
   align-items: center;

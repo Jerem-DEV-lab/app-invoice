@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import IconChevronDown from "@/components/Icon/IconChevronDown.vue";
+import IconChevronDown from "Components/Icon/IconChevronDown.vue";
 
 export default {
   name: "Dropdown",

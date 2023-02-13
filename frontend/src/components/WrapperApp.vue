@@ -8,7 +8,7 @@
           <img
             height="40px"
             width="40px"
-            src="@/assets/image-avatar.jpg"
+            src="Assets/image-avatar.jpg"
             alt="avatar"
           />
         </div>
@@ -22,9 +22,9 @@
   </div>
 </template>
 <script>
-import IconLogo from "./Icon/IconLogo.vue";
-import Logo from "@/components/Logo.vue";
-import ThemeSwitcher from "./ThemeSwitcher.vue";
+import IconLogo from "Components/Icon/IconLogo.vue";
+import Logo from "Components/Logo.vue";
+import ThemeSwitcher from "Components/ThemeSwitcher.vue";
 
 export default {
   name: "wrapper-app",

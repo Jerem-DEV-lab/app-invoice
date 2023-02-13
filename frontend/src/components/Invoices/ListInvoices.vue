@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import InvoiceItem from "@/components/Invoices/InvoiceItem.vue"
+import InvoiceItem from "Components/Invoices/InvoiceItem.vue"
 export default{
     name: "ListInvoices",
     components: {

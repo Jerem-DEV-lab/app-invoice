@@ -5,7 +5,7 @@
   </button>
 </template>
 <script>
-import IconArrowLeft from '@/components/Icon/IconArrowLeft.vue';
+import IconArrowLeft from 'Components/Icon/IconArrowLeft.vue';
 export default {
   name: "ButtonGoBack",
   components: {
