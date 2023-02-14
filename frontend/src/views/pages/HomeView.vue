@@ -26,7 +26,7 @@
       </header>
       <main :class="{ 'empty-invoice': filteredInvoices.length === 0 }">
         <empty-invoice v-if="filteredInvoices.length === 0"></empty-invoice>
-        <list-invoices v-else-if="filteredInvoices.length" :invoices="filteredInvoices"></list-invoices>
+        <list v-else-if="filteredInvoices.length" :invoices="filteredInvoices"></list>
       </main>
     </section>
     <modal-invoice @invoice-events="invoiceEvents" @close="stateModalCreate = !stateModalCreate"
@@ -38,8 +38,8 @@ import IconChevronDown from "Components/Icon/IconChevronDown.vue";
 import ButtonIcon from "Components/Button/ButtonIcon.vue";
 import IconAdd from "Components/Icon/IconAdd.vue";
 import EmptyInvoice from "Components/EmptyInvoice.vue";
-import ListInvoices from "Components/Invoices/ListInvoices.vue";
-import ModalInvoice from "Components/Invoices/ModalInvoice.vue";
+import List from "Components/Invoices/List.vue";
+import ModalInvoice from "Components/Invoices/Modal.vue";
 import Dropdown from "Components/Dropdown.vue";
 import Data from "@/data.json";
 
@@ -51,7 +51,7 @@ export default {
     ButtonIcon,
     IconAdd,
     EmptyInvoice,
-    ListInvoices,
+    List,
     ModalInvoice,
     Dropdown,
   },

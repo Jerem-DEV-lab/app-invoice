@@ -114,7 +114,7 @@ import SelectInput from "Components/Input/SelectInput.vue";
 import RowProduct from "Components/Invoices/RowProduct.vue";
 import { modelInvoice } from "@/models/invoice.js";
 export default {
-  name: "modal-invoice",
+  name: "modal",
   components: {
     SelectInput,
     RowProduct
