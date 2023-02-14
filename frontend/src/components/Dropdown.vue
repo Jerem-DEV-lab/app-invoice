@@ -1,12 +1,12 @@
 <template>
   <div v-clickoutside="onClose">
     <div class="dropdown">
-      <button @click="onOpen" type="button">
-        {{ label }}
+      <button @click="$emit('click-dropdown')" type="button">
+        <span :data-label="dataLabel">{{ label }}</span>
         <icon-chevron-down></icon-chevron-down>
       </button>
       <div v-if="state" class="dropdown__content">
-        <slot></slot>
+        <slot />
       </div>
     </div>
   </div>
@@ -16,7 +16,7 @@
 import IconChevronDown from "Components/Icon/IconChevronDown.vue";
 
 export default {
-  name: "Dropdown",
+  name: "dropdown",
   components: {
     IconChevronDown,
   },
@@ -25,8 +25,8 @@ export default {
       type: String,
       required: true,
     },
-    onOpen: {
-      type: Function,
+    dataLabel: {
+      type: String,
       required: true,
     },
     onClose: {
@@ -42,9 +42,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "Styles/tools/function.scss";
+@import "Styles/tools/mixins.scss";
+
 .dropdown {
   position: relative;
 }
+
+span::after {
+  content: attr(data-label);
+  margin-right: 16px;
+}
+
+@include down(768) {
+  span::after {
+    content: "";
+  }
+}
+
 .dropdown__content {
   position: absolute;
   display: flex;

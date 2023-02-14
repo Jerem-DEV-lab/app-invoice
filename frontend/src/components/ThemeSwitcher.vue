@@ -29,7 +29,7 @@ const defaultTheme = () => {
   }
 };
 export default {
-  name: "ThemeSwitcher",
+  name: "theme-switcher",
   components: {
     IconMoon,
     IconSun,

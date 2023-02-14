@@ -12,6 +12,6 @@
 
 <script>
 export default {
-  name: "IconChevronDown",
+  name: "icon-chevron-down",
 };
 </script>

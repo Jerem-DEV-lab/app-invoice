@@ -10,6 +10,6 @@
 
 <script>
 export default {
-  name: "IconMoon",
+  name: "icon-moon",
 };
 </script>

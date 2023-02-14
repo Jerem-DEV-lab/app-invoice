@@ -12,6 +12,6 @@
 
 <script>
 export default {
-  name: "IconArrowLeft",
+  name: "icon-arrow-left",
 };
 </script>

@@ -7,7 +7,7 @@
 <script>
 import IconLogo from "Components/Icon/IconLogo.vue";
 export default {
-  name: "Logo",
+  name: "logo",
   components: {
     IconLogo,
   },

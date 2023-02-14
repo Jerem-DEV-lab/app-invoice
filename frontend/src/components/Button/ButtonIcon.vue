@@ -1,7 +1,9 @@
 <template>
-  <button @click="onClick" type="button">
-    <span class="icon" v-if="slotStart"><slot name="icon-start"></slot> </span
-    >{{ label }}
+  <button @click="$emit('click')" type="button">
+    <span class="icon" v-if="slotStart">
+      <slot name="icon-start"></slot>
+    </span>
+    <slot />
     <span class="icon" v-if="slotEnd">
       <slot name="icon-end"></slot>
     </span>
@@ -10,7 +12,7 @@
 
 <script>
 export default {
-  name: "ButtonIcon",
+  name: "button-icon",
   data: () => {
     return {
       slotEnd: false,
@@ -24,16 +26,6 @@ export default {
     checkSlot() {
       this.slotEnd = !!this.$slots["icon-end"];
       this.slotStart = !!this.$slots["icon-start"];
-    },
-  },
-  props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
-    label: {
-      type: String,
-      required: true,
     },
   },
 };
@@ -51,10 +43,12 @@ button {
   min-height: 48px;
   color: white;
   transition: ease-in-out 0.2s;
+
   &:hover {
     background-color: var(--purple-hover);
   }
 }
+
 .icon {
   display: flex;
   justify-content: center;

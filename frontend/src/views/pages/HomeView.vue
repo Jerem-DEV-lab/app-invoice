@@ -4,50 +4,36 @@
       <header>
         <div class="list_title">
           <h1 class="title">Factures</h1>
-          <span>
-            Vous avez {{ invoices.length }} facture 1s
-          </span>
+          {{ subtitle }}
         </div>
         <div class="list_action">
-          <dropdown :label="labelButtonFilter" :onOpen="actionDropdownFilter"
-            :onClose="() => (stateDropdownFilter = false)" :state="stateDropdownFilter">
-            <div class="input-wrapper">
-              <input type="radio" id="all" v-model="filter" value="" name="filter" />
-              <label for="all">Toutes</label>
-            </div>
-            <div class="input-wrapper">
-              <input type="radio" id="draft" v-model="filter" value="draft" name="filter" />
-              <label for="draft">Brouillon</label>
-            </div>
-            <div class="input-wrapper">
-              <input type="radio" id="pending" v-model="filter" name="filter" value="pending" />
-              <label for="pending">En attente</label>
-            </div>
-            <div class="input-wrapper">
-              <input type="radio" id="paid" v-model="filter" name="filter" value="paid" />
-              <label for="paid">Payée</label>
+          <dropdown label="Filtrer" @click-dropdown="toggleDropdown" :state="stateDropdownFilter"
+            data-label="par status" :onClose="onCloseDropdown">
+            <div class="input-wrapper" v-for="(option, i) in filterOptions" :key="i">
+              <input type="radio" v-model="filter" :value="option.value" name="filter" />
+              <label :for="option.name">
+                {{ option.label }}
+              </label>
             </div>
           </dropdown>
-          <button-icon :label="labelButtonNewInvoice" :onClick="openModal">
+          <button-icon @click="stateModalCreate = !stateModalCreate">
             <template slot="icon-start">
               <icon-add></icon-add>
             </template>
+            <span data-label="Facture" class="dynamic-label">Nouvelle </span>
           </button-icon>
         </div>
       </header>
-      <main :class="[filteredInvoices.length === 0 && 'empty-invoice']">
+      <main :class="{ 'empty-invoice': filteredInvoices.length === 0 }">
         <empty-invoice v-if="filteredInvoices.length === 0"></empty-invoice>
-        <list-invoices v-else-if="filteredInvoices.length > 0" :invoices="filteredInvoices"></list-invoices>
+        <list-invoices v-else-if="filteredInvoices.length" :invoices="filteredInvoices"></list-invoices>
       </main>
     </section>
-    <transition name="slide">
-      <modal-invoice @createInvoice="onCreatedInvoice($event)" v-if="stateModalCreate"
-        :closeModal="closeModal"></modal-invoice>
-    </transition>
+    <modal-invoice @invoice-events="invoiceEvents" @close="stateModalCreate = !stateModalCreate"
+      v-if="stateModalCreate" />
   </div>
 </template>
 <script>
-import ButtonGoBack from "Components/Button/ButtonGoBack.vue";
 import IconChevronDown from "Components/Icon/IconChevronDown.vue";
 import ButtonIcon from "Components/Button/ButtonIcon.vue";
 import IconAdd from "Components/Icon/IconAdd.vue";
@@ -57,10 +43,10 @@ import ModalInvoice from "Components/Invoices/ModalInvoice.vue";
 import Dropdown from "Components/Dropdown.vue";
 import Data from "@/data.json";
 
+
 export default {
-  name: "HomeView",
+  name: "home-view",
   components: {
-    ButtonGoBack,
     IconChevronDown,
     ButtonIcon,
     IconAdd,
@@ -77,66 +63,45 @@ export default {
       stateModalCreate: false,
       stateDropdownFilter: false,
       filter: "",
+      filterOptions: [
+        { label: "Toutes", value: "", name: "all" },
+        { label: "Brouillon", value: "draft", name: "draft" },
+        { label: "En attente", value: "pending", name: "pending" },
+        { label: "Payée", value: "paid", name: "paid" },
+      ],
     };
   },
-  mounted() {
-    if (window.innerWidth > 768) {
-      this.labelButtonFilter = "Filtrer par status";
-      this.labelButtonNewInvoice = "Nouvelle facture";
-    } else {
-      this.labelButtonFilter = "Filtrer";
-      this.labelButtonNewInvoice = "Nouveau";
-    }
-    window.addEventListener("resize", this.getWindowWidth);
-  },
-  unmounted() {
-    window.removeEventListener("resize", this.getWindowWidth);
+  computed: {
+    subtitle() {
+      return `Vous avez ${this.invoices.length} facture${this.invoices.length > 1 ? "s" : ""}`
+    },
+    filteredInvoices() {
+      if (this.filter === '') return this.invoices;
+      return this.invoices.filter((invoice) => invoice.status === this.filter);
+    },
   },
   methods: {
-    onCreatedInvoice(invoice) {
-      return this.invoices.push(invoice);
-    },
-    getWindowWidth() {
-      if (window.innerWidth > 768) {
-        this.labelButtonFilter = "Filtrer par status";
-        this.labelButtonNewInvoice = "Nouvelle facture";
-      } else {
-        this.labelButtonFilter = "Filtrer";
-        this.labelButtonNewInvoice = "Nouveau";
-      }
-    },
-    actionDropdownFilter() {
+    toggleDropdown() {
       this.stateDropdownFilter = !this.stateDropdownFilter;
-      return this.stateDropdownFilter;
     },
-    onCloseDropdwon() {
-      return (this.stateDropdownFilter = false);
-    },
-    openModal() {
-      return (this.stateModalCreate = true);
-    },
-    closeModal() {
-      return (this.stateModalCreate = false);
-    },
-  },
-  computed: {
-    filteredInvoices() {
+    onCloseDropdown() {
       this.stateDropdownFilter = false;
-      if (this.filter === "draft") {
-        return this.invoices.filter((invoice) => invoice.status === "draft");
-      } else if (this.filter === "pending") {
-        return this.invoices.filter((invoice) => invoice.status === "pending");
-      } else if (this.filter === "paid") {
-        return this.invoices.filter((invoice) => invoice.status === "paid");
-      } else {
-        return this.invoices;
-      }
+    },
+    invoiceEvents(invoice, action) {
+      this.invoices.push({ ...invoice, status: action });
+      this.stateModalCreate = !this.stateModalCreate;
+    },
+    onCloseDropdown() {
+      this.stateDropdownFilter = false;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "Styles/tools/function.scss";
+@import "Styles/tools/mixins.scss";
+
 header {
   display: flex;
   align-content: center;
@@ -159,6 +124,14 @@ header {
   gap: 40px;
 }
 
+.dynamic-label::after {
+  content: attr(data-label);
+
+  @include down(768) {
+    content: none;
+  }
+}
+
 button {
   display: flex;
   align-items: center;
@@ -177,12 +150,6 @@ button {
   }
 }
 
-.input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  line-height: 0;
-}
 
 @media screen and (max-width: 767px) {
   .list_action {

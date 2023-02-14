@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: "SelectInput",
+  name: "select-input",
   props: {
     options: {
       type: Array,

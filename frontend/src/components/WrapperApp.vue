@@ -8,7 +8,7 @@
           <img
             height="40px"
             width="40px"
-            src="Assets/image-avatar.jpg"
+            src="@/assets/image-avatar.jpg"
             alt="avatar"
           />
         </div>

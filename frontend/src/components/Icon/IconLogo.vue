@@ -10,6 +10,6 @@
 
 <script>
 export default{
-  name: 'IconLogo'
+  name: 'icon-logo'
 }
 </script>

@@ -10,6 +10,6 @@
 
 <script>
 export default {
-  name: "IconAdd",
+  name: "icon-add",
 };
 </script>

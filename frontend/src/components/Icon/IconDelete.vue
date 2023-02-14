@@ -10,6 +10,6 @@
 
 <script>
 export default{
-    name: 'IconDelete'
+    name: 'icon-delete'
 }
 </script>

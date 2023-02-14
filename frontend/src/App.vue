@@ -6,7 +6,7 @@
 <script>
 import WrapperApp from "Components/WrapperApp.vue";
 export default {
-  name: "App",
+  name: "app",
   components: {
     WrapperApp,
   },

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "BadgeItem",
+  name: "badge-item",
   props: {
     status: {
       type: String,

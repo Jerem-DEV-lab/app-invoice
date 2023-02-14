@@ -9,7 +9,7 @@
 <script>
 import InvoiceItem from "Components/Invoices/InvoiceItem.vue"
 export default{
-    name: "ListInvoices",
+    name: "list-invoices",
     components: {
         InvoiceItem
     },
